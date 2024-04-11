@@ -33,7 +33,7 @@ POST "/businesses/"
         }
  */
 
-app.post('/businesses/', (req, res, next) => {
+app.post('/businesses/', (req, res) => {
     let id = businesses_counter;
 
     let missingParameters = [];
@@ -48,7 +48,7 @@ app.post('/businesses/', (req, res, next) => {
     if (missingParameters.length > 0) {
         return res.status(400).send(missingParameters.join("\n"));
     }
-    // Should all this parameter verification be a seperate next function?
+    // Should all this parameter verification be a separate next function?
     // Should we be calling a function here, then calling addNewBusiness from that fnc?
 
     businesses[id] = new Business(req.body);
@@ -132,7 +132,13 @@ GET "/businesses/{id}"
        }
  */
 
+app.get('/businesses/:id', (req, res) => {
+    let id = req.params.id;
 
+    if (id in businesses) {
+        res.status(200).send(businesses[id]);
+    }
+})
 
 /*
 User writes a new review
