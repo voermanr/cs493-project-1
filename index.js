@@ -1,6 +1,21 @@
 // Project 1 Check-in 1
 // Endpoints Design
 
+let express = require('express');
+const {Business} = require("./business");
+let app = express();
+
+let businesses = {};
+let businesses_counter = 0;
+
+let port = 6969;
+
+app.use(express.json());
+
+app.listen(port, () => {
+    console.log(`Listening on ${port}...`)
+})
+
 /*
 User adds a new business
 
