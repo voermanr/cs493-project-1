@@ -12,6 +12,15 @@ class Business {
         this.email = email;
         this.links = [{"self":`/businesses/${id}`}];
     }
+
+    updateFields(desiredFields) {
+        // TODO: don't let users add anything but allowed fields, i.e. don't let them make new links.
+        for (let field in desiredFields) {
+            if (field in this) {
+                this[field] = desiredFields[field];
+            }
+        }
+    }
 }
 
 module.exports = { Business };
