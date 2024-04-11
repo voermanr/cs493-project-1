@@ -33,6 +33,34 @@ POST "/businesses/"
         }
  */
 
+app.post('/businesses/', (req, res, next) => {
+    let id = businesses_counter;
+
+    let missingParameters = [];
+    const requiredParameters = ['name', 'street_address', 'city', 'state', 'zip', 'phone_number', 'category', 'subcategory'];
+
+    requiredParameters.forEach(param => {
+        if (!req.body.hasOwnProperty(param)) {
+            missingParameters.push(`${param} is missing`);
+        }
+    });
+
+    if (missingParameters.length > 0) {
+        return res.status(400).send(missingParameters.join("\n"));
+    }
+    // Should all this parameter verification be a seperate next function?
+    // Should we be calling a function here, then calling addNewBusiness from that fnc?
+
+    businesses[id] = new Business(req.body);
+    businesses_counter++;
+
+    res.status(201).json({
+        'id': id,
+        'links': [
+            {'self': `/businesses/${id}`}
+        ]
+    });
+})
 
 
 /*
