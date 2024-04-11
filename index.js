@@ -51,7 +51,7 @@ app.post('/businesses/', (req, res) => {
     // Should all this parameter verification be a separate next function?
     // Should we be calling a function here, then calling addNewBusiness from that fnc?
 
-    businesses[id] = new Business(req.body);
+    businesses[id] = new Business(id, req.body);
     businesses_counter++;
 
     res.status(201).json({
