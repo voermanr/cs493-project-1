@@ -74,6 +74,16 @@ PATCH "/businesses/{id}"
     res:
 
  */
+app.patch('/businesses/:id', (req, res) => {
+    //TODO: verify that the update contains only patchable fields
+    //TODO: strip update to only patchable fields
+
+    let id = req.params.id;
+
+    if (id in businesses) {
+        businesses[id].updateFields(req.body);
+    }
+})
 
 
 
