@@ -27,5 +27,12 @@ curl $SURL/businesses/0
 echo ""
 
 status 'GET every business'
+curl $SURL/businesses/
+echo ""
+
+status 'PATCH name on a business'
+curl -X PATCH \
+  -d '{"name":"Jimmy Pestos Insurrection Pizza}' \
+  $SURL/businesses/0
 
 # etc.
