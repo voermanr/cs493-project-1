@@ -83,6 +83,11 @@ app.patch('/businesses/:id', (req, res) => {
     if (id in businesses) {
         businesses[id].updateFields(req.body);
     }
+
+    res.status(200).send({
+        'links': [
+            {'self': `/businesses/${id}`}]
+    })
 })
 
 
