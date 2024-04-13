@@ -102,6 +102,17 @@ DELETE "/businesses/{id}"
     res:
  */
 
+app.delete('/businesses/:id', (req, res) => {
+    let id = req.params.id;
+
+    if (id in businesses) {
+        delete businesses[id];
+        res.sendStatus(204);
+    }
+    else
+        res.status(404).send(`Business not found.`);
+});
+
 
 
 /*
