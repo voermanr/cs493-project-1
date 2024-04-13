@@ -171,7 +171,7 @@ app.get('/reviews/:id', (req, res) => {
 app.post('/photos/', (req, res) => {
     let id = photos_counter;
 
-    photos[id] = req.body;
+    photos[id] = new Photo(id, req.body);
 })
 
 
