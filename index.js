@@ -1,5 +1,4 @@
-// Project 1 Check-in 1
-// Endpoints Design
+// Project 1 Check-in 2
 
 let express = require('express');
 const {Business} = require("./business");
@@ -16,23 +15,8 @@ app.listen(port, () => {
     console.log(`Listening on ${port}...`)
 })
 
-/*
-User adds a new business
 
-POST "/businesses/"
--------------------
-    params:
-        name, street_address, city, state, zip, phone_number, category, subcategory, (website), (email)
-
-    res:
-        {
-            id,
-            links: {
-                "/businesses/id"
-            }
-        }
- */
-
+// User adds a new business
 app.post('/businesses/', (req, res) => {
     let id = businesses_counter;
 
@@ -65,14 +49,6 @@ app.post('/businesses/', (req, res) => {
 
 /*
 User updates a business
-
-PATCH "/businesses/{id}"
-----------------------
-    params:
-        (name), (street_address), (city), (state), (zip), (phone_number), (category), (subcategory), (website), (email)
-
-    res:
-
  */
 app.patch('/businesses/:id', (req, res) => {
     //TODO: verify that the update contains only patchable fields
@@ -94,14 +70,7 @@ app.patch('/businesses/:id', (req, res) => {
 
 /*
 User removes a business
-
-DELETE "/businesses/{id}"
--------------------------
-    params:
-
-    res:
  */
-
 app.delete('/businesses/:id', (req, res) => {
     let id = req.params.id;
 
@@ -113,22 +82,8 @@ app.delete('/businesses/:id', (req, res) => {
         res.status(404).send(`Business not found.`);
 });
 
-
-
 /*
 User gets a list of all businesses
-
-GET "/businesses/"
-------------------
-    params:
-
-    res:
-        [
-            { id0, name, street_address, ... , (email) },
-            { id1, name, street_address, ... , (email) },
-            ... ,
-            { idn, name, street_address, ... , (email) }
-        ]
  */
 
 app.get('/businesses/', (req, res) => {
@@ -139,27 +94,6 @@ app.get('/businesses/', (req, res) => {
 
 /*
 Users gets a specific business
-
-GET "/businesses/{id}"
-----------------------
-    params:
-
-    res:
-        {
-            name,
-            street_address
-            ...
-            links : {
-                photos: {
-                    "/photos/id0",
-                    "/photos/id1"
-                },
-                reviews: {
-                    "/reviews/id0",
-                    "/reviews/id1"
-                }
-            }
-       }
  */
 
 app.get('/businesses/:id', (req, res) => {
