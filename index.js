@@ -168,6 +168,8 @@ app.get('/businesses/:id', (req, res) => {
     if (id in businesses) {
         res.status(200).send(businesses[id]);
     }
+    else
+        res.status(404).send('Business not found.');
 })
 
 /*
