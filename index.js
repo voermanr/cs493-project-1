@@ -131,6 +131,10 @@ GET "/businesses/"
         ]
  */
 
+app.get('/businesses/', (req, res) => {
+    res.send(businesses);
+})
+
 
 
 /*
