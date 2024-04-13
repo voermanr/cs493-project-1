@@ -2,10 +2,17 @@
 
 let express = require('express');
 const {Business} = require("./business");
+const {Review} = require("./review");
 let app = express();
 
 let businesses = {};
 let businesses_counter = 0;
+
+let reviews = {};
+let reviews_counter = 0;
+
+let photos = {};
+let photos_counter = 0;
 
 let port = 6969;
 
@@ -46,10 +53,7 @@ app.post('/businesses/', (req, res) => {
     });
 })
 
-
-/*
-User updates a business
- */
+// User updates a business
 app.patch('/businesses/:id', (req, res) => {
     //TODO: verify that the update contains only patchable fields
     //TODO: strip update to only patchable fields
@@ -58,19 +62,18 @@ app.patch('/businesses/:id', (req, res) => {
 
     if (id in businesses) {
         businesses[id].updateFields(req.body);
-    }
 
-    res.status(200).send({
-        'links': [
-            {'self': `/businesses/${id}`}]
-    })
+        res.status(200).send({
+            'links': [
+                {'self': `/businesses/${id}`}
+            ]
+        });
+    }
+    else
+        res.sendStatus(404);
 })
 
-
-
-/*
-User removes a business
- */
+// User removes a business
 app.delete('/businesses/:id', (req, res) => {
     let id = req.params.id;
 
@@ -82,20 +85,12 @@ app.delete('/businesses/:id', (req, res) => {
         res.status(404).send(`Business not found.`);
 });
 
-/*
-User gets a list of all businesses
- */
-
+// User gets a list of all businesses
 app.get('/businesses/', (req, res) => {
     res.send(businesses);
 })
 
-
-
-/*
-Users gets a specific business
- */
-
+// User gets a specific business
 app.get('/businesses/:id', (req, res) => {
     let id = req.params.id;
 
@@ -106,79 +101,78 @@ app.get('/businesses/:id', (req, res) => {
         res.status(404).send('Business not found.');
 })
 
-/*
-User writes a new review
+// User posts a new review
+app.post('/reviews/', (req, res) => {
+    let id = reviews_counter;
 
-POST "/reviews/"
-----------------
-    params:
-        star_rating, dollar_sign_rating, review_body
+    // TODO: link reviews to businesses somehow. require a business id?
 
-    res:
-        {
-            id,
-            links: {
-                "/reviews/id"
-            }
+    // TODO: make a validate params middleware function
+    let missingParameters = [];
+    const requiredParameters = ['starRating', 'dollarSignRating'];
+
+    requiredParameters.forEach(param => {
+        if (!req.body.hasOwnProperty(param)) {
+            missingParameters.push(`${param} is missing`);
         }
- */
+    });
 
+    if (missingParameters.length > 0) {
+        return res.status(400).send(missingParameters.join("\n"));
+    }
+    // Should all this parameter verification be a separate next function?
+    // Should we be calling a function here, then calling addNewBusiness from that fnc?
 
+    reviews[id] = new Review(id, req.body);
+    reviews_counter++;
 
+    res.status(201).json({
+        'id': id,
+        'links': [
+            {'self': `/reviews/${id}`}
+        ]
+    });
+})
 
-/*
-User deletes review
+// User deletes a review
+app.delete('/reviews/:id', (req, res) => {
+    let id = req.params.id;
+    if (id in reviews) {
+        delete reviews[id];
+        res.sendStatus(204);
+    }
+    else {
+        res.status(404).send('Review not found.');
+    }
+})
 
-DELETE "/reviews/{id}"
-----------------------
-    params:
+// User updates a review
+app.patch('/reviews/:id', (req, res) => {
+    let id = req.params.id;
+    if (id in reviews) {
+        reviews[id].updateFields(req.body);
+        res.status(200).send({
+            'links': [
+                {'self': `/reviews/${id}`}
+            ]
+        });
+    }
+})
 
-    res:
- */
+// User views a review
+app.get('/reviews/:id', (req, res) => {
+    let id = req.params.id;
+    if (id in reviews) {
+        res.status(200).send(reviews[id]);
+    }
+})
 
+// User posts new photo
+app.post('/photos/', (req, res) => {
+    let id = photos_counter;
 
-
-/*
-User updates review
-
-PATCH "/reviews/{id}"
----------------------
-    params:
-        (star_rating), (dollar_sign_rating), (review_body)
-
-    res:
- */
-
-
-/*
-User views reviews
-
-GET "/reviews/{id}"
--------------------
-    params:
-
-    res:
- */
-
-
-
-/*
-User posts new photo
-
-POST "/photos/"
----------------
-    params:
-        (caption)
-
-    res:
-        {
-            id,
-            links: {
-                "/photos/id"
-            }
-        }
- */
-
+    photos[id] = req.body;
+})
 
 
 /*
