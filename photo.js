@@ -14,3 +14,5 @@ class Photo {
         }
     }
 }
+
+module.exports = { Photo };

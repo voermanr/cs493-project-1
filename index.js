@@ -3,6 +3,7 @@
 let express = require('express');
 const {Business} = require("./business");
 const {Review} = require("./review");
+const {Photo} = require("./photo");
 let app = express();
 
 let businesses = {};
@@ -172,59 +173,52 @@ app.post('/photos/', (req, res) => {
     let id = photos_counter;
 
     photos[id] = new Photo(id, req.body);
+    photos_counter++;
+
+    res.status(201).send({
+        'id': id,
+        'links': [
+            {'self': `/photos/${id}`}
+        ]
+    })
 })
 
+// DELETE /photos/{id}
+app.delete('/photos/:id', (req, res) => {
+    let id = req.params.id;
+    if (id in photos) {
+        delete photos[id];
+        res.sendStatus(204);
+    }
+    else {
+        res.status(404).send('Photo not found.');
+    }
+})
 
-/*
-User deletes photo
+// PATCH /photos/{id}
+app.patch('/photos/:id', (req, res) => {
+    let id = req.params.id;
+    if (id in photos) {
+        photos[id].updateFields(req.body);
+        res.status(200).send({
+            'links': [
+                {'self': `/photos/${id}`}
+            ]
+        });
+    }
+})
 
-DELETE "/photos/{id}"
----------------------
-    params:
+// GET /photos/{id}
+app.get('/photos/:id', (req, res) => {
+    let id = req.params.id;
+    if (id in photos) {
+        res.status(200).send(photos[id]);
+    }
+    else
+        res.sendStatus(404);
+})
 
-    res:
- */
-
-
-
-/*
-User modifies caption
-
-PATCH "/photos/{id}"
---------------------
-    params:
-        (caption)
-
-    res:
- */
-
-
-
-/*
-User wants to view a photo
-
-GET "/photos/{id}"
-------------------
-    params:
-
-    res:
- */
-
-
-
-
-/*
-User lists all photos
-
-GET "/photos"
--------------
-    params:
-
-    res:
-        {
-            { id0, caption, links: "/photos/id0" },
-            { id1, caption, links: "/photos/id1" },
-            ... ,
-            { id2, caption, links: "/photos/id2" }
-        }
- */
+// GET /photos/
+app.get('/photos/', (req, res) => {
+    res.status(200).send(photos);
+})

@@ -73,5 +73,18 @@ status 'PATCH body on a review' "${output}"
 # POST /photos/
 output=$(curl -X POST -s \
     -H 'Content-Type: application/json' \
+    -d '' \
     $SURL/photos/)
 status 'POST a new photo' "${output}"
+
+# GET /photos/0
+output=$(curl -s $SURL/photos/0)
+status 'GET a photo' "${output}"
+
+# PATCH /photos/id
+curl -X PATCH -s \
+  -H 'Content-Type: application/json' \
+  -d '{"caption":"a hotdog on top of a cold dog"}' \
+  $SURL/photos/0 > /dev/null
+output=$(curl -s $SURL/photos/0)
+status 'PATCH caption on a photo' "${output}"
