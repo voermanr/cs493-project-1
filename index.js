@@ -15,14 +15,13 @@ let reviews_counter = 0;
 let photos = {};
 let photos_counter = 0;
 
-let port = 6969;
+let port = process.argv[2];
 
 app.use(express.json());
 
 app.listen(port, () => {
     console.log(`Listening on ${port}...`)
 })
-
 
 // User adds a new business
 app.post('/businesses/', (req, res) => {
