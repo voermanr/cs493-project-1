@@ -47,7 +47,50 @@ output=$(curl -s $SURL/businesses/1)
 status 'DELETE a business' "${output}"
 
 # GET /businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+      -H 'Content-Type: application/json' \
+      -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+      $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
+curl -X POST -s \
+    -H 'Content-Type: application/json' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    $SURL/businesses/
 output=$(curl -s $SURL/businesses/)
+status 'GET every business' "${output}"
+
+output=$(curl -s $SURL/businesses?page=2)
 status 'GET every business' "${output}"
 
 # POST /review/
