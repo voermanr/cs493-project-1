@@ -56,7 +56,6 @@ app.post('/businesses/', (req, res) => {
 // User updates a business
 app.patch('/businesses/:id', (req, res) => {
     //TODO: verify that the update contains only patchable fields
-    //TODO: strip update to only patchable fields
 
     let id = req.params.id;
 
@@ -147,8 +146,6 @@ app.post('/reviews/', (req, res) => {
     if (missingParameters.length > 0) {
         return res.status(400).send(missingParameters.join("\n"));
     }
-    // Should all this parameter verification be a separate next function?
-    // Should we be calling a function here, then calling addNewBusiness from that fnc?
 
     reviews[id] = new Review(id, req.body);
     reviews_counter++;
@@ -246,5 +243,7 @@ app.get('/photos/:id', (req, res) => {
 
 // GET /photos/
 app.get('/photos/', (req, res) => {
+    //TODO: add pagination
+
     res.status(200).send(photos);
 })
