@@ -6,13 +6,13 @@ const {Review} = require("./review");
 const {Photo} = require("./photo");
 let app = express();
 
-let businesses = {};
+let businesses = [];
 let businesses_counter = 0;
 
-let reviews = {};
+let reviews = [];
 let reviews_counter = 0;
 
-let photos = {};
+let photos = [];
 let photos_counter = 0;
 
 let port = process.argv[2];
@@ -87,7 +87,34 @@ app.delete('/businesses/:id', (req, res) => {
 
 // User gets a list of all businesses
 app.get('/businesses/', (req, res) => {
-    res.send(businesses);
+    let page = parseInt(req.query.page) || 1;
+    let numPerPage = 10;
+    let lastPage = Math.ceil(businesses.length /numPerPage);
+    page = page < 1 ? 1 : page;
+    page = page > lastPage ? lastPage : page;
+
+    let start = (page - 1) * numPerPage;
+    let end = start + numPerPage;
+    let pageBusinesses = businesses.slice(start, end);
+
+    let links = {};
+    if (page < lastPage) {
+        links.nextPage = '/businesses?page=' + (page + 1);
+        links.lastPage = '/businesses?page=' + lastPage;
+    }
+    if (page > 1) {
+        links.prevPage = '/businesses?page=' + (page - 1);
+        links.firstPage = '/businesses?page=1';
+    }
+
+    res.status(200).json({
+        "pageNumber": page,
+        "totalPages": lastPage,
+        "pageSize": numPerPage,
+        "totalCount": businesses.length,
+        "businesses": pageBusinesses,
+        "links": links
+    });
 })
 
 // User gets a specific business
