@@ -23,35 +23,44 @@ app.listen(port, () => {
     console.log(`Listening on ${port}...`)
 })
 
-// User adds a new business
-app.post('/businesses/', (req, res) => {
-    let id = businesses_counter;
+function findMissingParams(req, res, next) {
+    let missingParams = [];
+    let requiredParams = req.requiredParams;
 
-    let missingParameters = [];
-    const requiredParameters = ['name', 'street_address', 'city', 'state', 'zip', 'phone_number', 'category', 'subcategory'];
-
-    requiredParameters.forEach(param => {
+    requiredParams.forEach(param => {
         if (!req.body.hasOwnProperty(param)) {
-            missingParameters.push(`${param} is missing`);
+            missingParams.push(`${param}`);
         }
     });
 
-    if (missingParameters.length > 0) {
-        return res.status(400).send(missingParameters.join("\n"));
+    if (missingParams.length > 0) {
+        res.status(400).send("missing parameters: " + missingParams.join(", "))
     }
-    // Should all this parameter verification be a separate next function?
-    // Should we be calling a function here, then calling addNewBusiness from that fnc?
 
+    next()
+}
+
+function prepareBusinessParams(req, res, next) {
+    req.requiredParams = ['name', 'street_address', 'city', 'state', 'zip', 'phone_number', 'category', 'subcategory'];
+
+    next();
+}
+
+function createBusiness(req, res) {
+    let id = businesses_counter;
     businesses[id] = new Business(id, req.body);
     businesses_counter++;
-
     res.status(201).json({
         'id': id,
         'links': [
             {'self': `/businesses/${id}`}
         ]
     });
-})
+}
+
+// User adds a new business
+app.post('/businesses/', prepareBusinessParams, findMissingParams, createBusiness)
+
 
 // User updates a business
 app.patch('/businesses/:id', (req, res) => {
@@ -83,6 +92,17 @@ app.delete('/businesses/:id', (req, res) => {
     else
         res.status(404).send(`Business not found.`);
 });
+
+// User gets a specific business
+app.get('/businesses/:id', (req, res) => {
+    let id = req.params.id;
+
+    if (id in businesses) {
+        res.status(200).send(businesses[id]);
+    }
+    else
+        res.status(404).send('Business not found.');
+})
 
 // User gets a list of all businesses
 app.get('/businesses/', (req, res) => {
@@ -116,22 +136,9 @@ app.get('/businesses/', (req, res) => {
     });
 })
 
-// User gets a specific business
-app.get('/businesses/:id', (req, res) => {
-    let id = req.params.id;
-
-    if (id in businesses) {
-        res.status(200).send(businesses[id]);
-    }
-    else
-        res.status(404).send('Business not found.');
-})
-
 // User posts a new review
 app.post('/reviews/', (req, res) => {
     let id = reviews_counter;
-
-    // TODO: link reviews to businesses somehow. require a business id?
 
     // TODO: make a validate params middleware function
     let missingParameters = [];
@@ -246,4 +253,8 @@ app.get('/photos/', (req, res) => {
     //TODO: add pagination
 
     res.status(200).send(photos);
+})
+
+app.get('/*', (req, res) => {
+    res.sendStatus(404);
 })
