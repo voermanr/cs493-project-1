@@ -6,6 +6,7 @@ app.use(express.json());
 
 const busCon = require("./controllers/businessesController");
 const revCon = require("./controllers/reviewsController");
+const phoCon = require("./controllers/photoController");
 const {findMissingParams} = require("./middeware/findMissingParameters");
 
 let port = process.argv[2];
@@ -44,61 +45,20 @@ app.get('/reviews/:id', revCon.getReviewById)
 
 
 // User posts new photo
-app.post('/photos/', (req, res) => {
-    let id = photos_counter;
-
-    photos[id] = new Photo(id, req.body);
-    photos_counter++;
-
-    res.status(201).send({
-        'id': id,
-        'links': [
-            {'self': `/photos/${id}`}
-        ]
-    })
-})
+app.post('/photos/', phoCon.setRequiredParams, findMissingParams, phoCon.createNewPhoto)
 
 // DELETE /photos/{id}
-app.delete('/photos/:id', (req, res) => {
-    let id = req.params.id;
-    if (id in photos) {
-        delete photos[id];
-        res.sendStatus(204);
-    }
-    else {
-        res.status(404).send('Photo not found.');
-    }
-})
+app.delete('/photos/:id', phoCon.deletePhoto);
 
 // PATCH /photos/{id}
-app.patch('/photos/:id', (req, res) => {
-    let id = req.params.id;
-    if (id in photos) {
-        photos[id].updateFields(req.body);
-        res.status(200).send({
-            'links': [
-                {'self': `/photos/${id}`}
-            ]
-        });
-    }
-})
+app.patch('/photos/:id', phoCon.updatePhotoById)
 
 // GET /photos/{id}
-app.get('/photos/:id', (req, res) => {
-    let id = req.params.id;
-    if (id in photos) {
-        res.status(200).send(photos[id]);
-    }
-    else
-        res.sendStatus(404);
-})
+app.get('/photos/:id', phoCon.getPhotoById)
 
 // GET /photos/
-app.get('/photos/', (req, res) => {
-    //TODO: add pagination
+app.get('/photos/', phoCon.getAllPhotos)
 
-    res.status(200).send(photos);
-})
 
 app.get('/*', (req, res) => {
     res.sendStatus(404);
