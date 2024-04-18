@@ -31,66 +31,17 @@ app.delete('/businesses/:id', busCon.deleteBusinessById);
 
 
 // User posts a new review
-app.post('/reviews/', (req, res) => {
-    let id = reviews_counter;
-
-    // TODO: make a validate params middleware function
-    let missingParameters = [];
-    const requiredParameters = ['starRating', 'dollarSignRating'];
-
-    requiredParameters.forEach(param => {
-        if (!req.body.hasOwnProperty(param)) {
-            missingParameters.push(`${param} is missing`);
-        }
-    });
-
-    if (missingParameters.length > 0) {
-        return res.status(400).send(missingParameters.join("\n"));
-    }
-
-    reviews[id] = new Review(id, req.body);
-    reviews_counter++;
-
-    res.status(201).json({
-        'id': id,
-        'links': [
-            {'self': `/reviews/${id}`}
-        ]
-    });
-})
+app.post('/reviews/', revCon.setRequiredParams, findMissingParams, revCon.createNewReview)
 
 // User deletes a review
-app.delete('/reviews/:id', (req, res) => {
-    let id = req.params.id;
-    if (id in reviews) {
-        delete reviews[id];
-        res.sendStatus(204);
-    }
-    else {
-        res.status(404).send('Review not found.');
-    }
-})
+app.delete('/reviews/:id', revCon.deleteReviewById)
 
 // User updates a review
-app.patch('/reviews/:id', (req, res) => {
-    let id = req.params.id;
-    if (id in reviews) {
-        reviews[id].updateFields(req.body);
-        res.status(200).send({
-            'links': [
-                {'self': `/reviews/${id}`}
-            ]
-        });
-    }
-})
+app.patch('/reviews/:id', revCon.updateReview);
 
 // User views a review
-app.get('/reviews/:id', (req, res) => {
-    let id = req.params.id;
-    if (id in reviews) {
-        res.status(200).send(reviews[id]);
-    }
-})
+app.get('/reviews/:id', revCon.getReviewById)
+
 
 // User posts new photo
 app.post('/photos/', (req, res) => {
