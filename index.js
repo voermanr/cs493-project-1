@@ -1,32 +1,18 @@
-// Project 1 Check-in 2
+// Project 1
 
 let express = require('express');
-const {Review} = require("./models/review");
-const {Photo} = require("./models/photo");
-
-const busCon = require("./controllers/businessesController");
-
-const {findMissingParams} = require("./middeware/findMissingParameters");
-const {updateBusinessById} = require("./controllers/businessesController");
-
 let app = express();
-
-let businesses = [];
-let businesses_counter = 0;
-
-let reviews = [];
-let reviews_counter = 0;
-
-let photos = [];
-let photos_counter = 0;
-
-let port = process.argv[2];
-
 app.use(express.json());
 
+const busCon = require("./controllers/businessesController");
+const revCon = require("./controllers/reviewsController");
+const {findMissingParams} = require("./middeware/findMissingParameters");
+
+let port = process.argv[2];
 app.listen(port, () => {
     console.log(`Listening on ${port}...`)
 })
+
 
 // User adds a new business
 app.post('/businesses/', busCon.setRequiredBusinessParams, findMissingParams, busCon.createNewBusiness);
@@ -42,6 +28,7 @@ app.patch('/businesses/:id', busCon.updateBusinessById);
 
 // User removes a business
 app.delete('/businesses/:id', busCon.deleteBusinessById);
+
 
 // User posts a new review
 app.post('/reviews/', (req, res) => {
