@@ -43,8 +43,6 @@ app.patch('/businesses/:id', busCon.updateBusinessById);
 // User removes a business
 app.delete('/businesses/:id', busCon.deleteBusinessById);
 
-
-
 // User posts a new review
 app.post('/reviews/', (req, res) => {
     let id = reviews_counter;

@@ -13,14 +13,14 @@ status() {
 # POST a new business
 output=$(curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/)
 status 'POST a new business' "$output"
 
 # fail to post a business
 output=$(curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"city":"Bobtown", "state":"PN", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"city":"Bobtown", "state":"PN", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/)
 status 'fail to POST a new business without name or zip' "${output}"
 
@@ -39,7 +39,7 @@ status 'PATCH name on a business' "${output}"
 # DELETE /businesses/
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"A Deletable Place", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"A Deletable Place", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ > /dev/null
 curl -X DELETE -s \
   $SURL/businesses/1 > /dev/null
@@ -49,43 +49,43 @@ status 'DELETE a business' "${output}"
 # GET /businesses/
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
       -H 'Content-Type: application/json' \
-      -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+      -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
       $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 curl -X POST -s \
     -H 'Content-Type: application/json' \
-    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "street_address":"420", "phone_number":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
+    -d '{"name":"Bobs Burgers", "city":"Bobtown", "state":"PN", "zip":"12700", "streetAddress":"420", "phoneNumber":"867-5309", "category":"burgerstand", "subcategory":"with_fries"}' \
     $SURL/businesses/ >> /dev/null
 output=$(curl -s $SURL/businesses/)
 status 'GET every business' "${output}"
