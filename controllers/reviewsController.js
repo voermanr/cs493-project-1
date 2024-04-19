@@ -7,7 +7,7 @@ module.exports.setRequiredParams = (req, res, next) => {
     next();
 }
 
-module.exports.createNewReview = (req, res, next) => {
+module.exports.createNewReview = (req, res) => {
     let id = reviewCounter;
     reviews[id] = new Review(id, req.body);
     reviewCounter++;
@@ -27,7 +27,8 @@ module.exports.getReviewById = (req, res, next) => {
         res.status(200).send(reviews[id]);
     }
     else {
-        res.status(404).send('Review not found.');
+        res.statusText('Review not found.');
+        next();
     }
 }
 
@@ -41,6 +42,10 @@ module.exports.updateReview = (req, res, next) => {
             ]
         });
     }
+    else {
+        res.statusText('Review not found.');
+        next();
+    }
 }
 
 module.exports.deleteReviewById = (req, res, next) => {
@@ -50,6 +55,7 @@ module.exports.deleteReviewById = (req, res, next) => {
         res.sendStatus(204);
     }
     else {
-        res.status(404).send('Review not found.');
+        res.statusText('Review not found.');
+        next();
     }
 }

@@ -7,7 +7,7 @@ module.exports.setRequiredBusinessParams = (req, res, next) => {
         next();
 }
 
-module.exports.createNewBusiness = (req, res, next) => {
+module.exports.createNewBusiness = (req, res) => {
     let id = businessCounter;
     businesses[id] = new Business(id, req.body);
     businessCounter++;
@@ -25,12 +25,13 @@ module.exports.getBusinessById = (req, res, next) => {
     if (businesses[id] ) {
         res.status(200).send(businesses[id]);
     }
-    else
-        //TODO: remove this and make a general handler for when the path is not found. replace with a call to next()
-        res.status(404).send('Business not found.');
+    else {
+        res.statusText = 'Business not found.'
+        next();
+    }
 }
 
-module.exports.getAllBusinesses = (req, res, next) => {
+module.exports.getAllBusinesses = (req, res) => {
     let page = parseInt(req.query.page) || 1;
     let numPerPage = 10;
     let lastPage = Math.ceil(businesses.length /numPerPage);
@@ -75,8 +76,10 @@ module.exports.updateBusinessById = (req, res, next) => {
             ]
         });
     }
-    else
-        res.sendStatus(404);
+    else {
+        res.statusText = 'Business not found.'
+        next();
+    }
 }
 
 module.exports.deleteBusinessById = (req, res, next) => {
@@ -87,6 +90,8 @@ module.exports.deleteBusinessById = (req, res, next) => {
         businesses[id] = undefined;
         res.sendStatus(204);
     }
-    else
-        res.status(404).send(`Business not found.`);
+    else {
+        res.statusText = 'Business not found.'
+        next();
+    }
 }

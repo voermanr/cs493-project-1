@@ -8,7 +8,7 @@ module.exports.setRequiredParams = (req, res, next) => {
     next();
 }
 
-module.exports.createNewPhoto = (req, res, next) => {
+module.exports.createNewPhoto = (req, res) => {
     let id = photoCounter;
     photos[id] = new Photo(id, req.body);
     photoCounter++;
@@ -26,14 +26,41 @@ module.exports.getPhotoById = (req, res, next) => {
     if (id in photos) {
         res.status(200).send(photos[id]);
     }
-    else
-        res.sendStatus(404);
+    else {
+        res.statusText = "No photo found";
+        next();
+    }
 }
 
-module.exports.getAllPhotos = (req, res, next) => {
-    //TODO: add pagination
+module.exports.getAllPhotos = (req, res) => {
+    let page = parseInt(req.query.page) || 1;
+    let numPerPage = 10;
+    let lastPage = Math.ceil(photos.length /numPerPage);
+    page = page < 1 ? 1 : page;
+    page = page > lastPage ? lastPage : page;
 
-    res.status(200).send(photos);
+    let start = (page - 1) * numPerPage;
+    let end = start + numPerPage;
+    let pagePhotos = photos.slice(start, end);
+
+    let links = {};
+    if (page < lastPage) {
+        links.nextPage = '/photos?page=' + (page + 1);
+        links.lastPage = '/photos?page=' + lastPage;
+    }
+    if (page > 1) {
+        links.prevPage = '/photos?page=' + (page - 1);
+        links.firstPage = '/photos?page=1';
+    }
+
+    res.status(200).json({
+        "pageNumber": page,
+        "totalPages": lastPage,
+        "pageSize": numPerPage,
+        "totalCount": photos.length,
+        "photos": pagePhotos,
+        "links": links
+    });
 }
 
 module.exports.updatePhotoById = (req, res, next) => {
@@ -46,6 +73,10 @@ module.exports.updatePhotoById = (req, res, next) => {
             ]
         });
     }
+    else {
+        res.statusText = "No photo found";
+        next();
+    }
 }
 
 module.exports.deletePhoto = (req, res, next) => {
@@ -55,6 +86,7 @@ module.exports.deletePhoto = (req, res, next) => {
         res.sendStatus(204);
     }
     else {
-        res.status(404).send('Photo not found.');
+        res.statusText = 'Photo not found';
+        next();
     }
 }

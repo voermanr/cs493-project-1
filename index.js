@@ -59,7 +59,6 @@ app.get('/photos/:id', phoCon.getPhotoById)
 // GET /photos/
 app.get('/photos/', phoCon.getAllPhotos)
 
-
 app.get('/*', (req, res) => {
-    res.sendStatus(404);
+    res.status(404).send(res.statusText);
 })
