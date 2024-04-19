@@ -9,7 +9,7 @@ const revCon = require("./controllers/reviewsController");
 const phoCon = require("./controllers/photoController");
 const {findMissingParams} = require("./middeware/findMissingParameters");
 
-let port = process.argv[2];
+let port = process.env.PORT || 6969;
 app.listen(port, () => {
     console.log(`Listening on ${port}...`)
 })
